@@ -9,13 +9,24 @@ const passport = require('passport');
 // Load User model
 const User = require('../../models/User');
 
+// Load Input Validation
+const validateRegisterInput = require('../../validation/register');
+
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
-      return res.status(400).json({ email: 'Email already exists' });
+      errors.email = 'Email already exists';
+      return res.status(400).json(errors);
     }
 
     const newUser = new User({
