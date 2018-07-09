@@ -42,4 +42,26 @@ router.post('/register', (req, res) => {
   });
 });
 
+// @route   GET api/users/login
+// @desc    Login user
+// @access  Public
+router.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  // Find user by email
+  User.findOne({ email }).then(user => {
+    if (!user) {
+      return res.status(404).json({ email: 'User not found' });
+    }
+
+    // Check Password
+    bcrypt.compare(password, user.password).then(isMatch => {
+      return isMatch
+        ? res.json({ msg: 'Success' })
+        : res.status(400).json({ password: 'Password incorrect' });
+    });
+  });
+});
+
 module.exports = router;
