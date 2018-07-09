@@ -11,6 +11,7 @@ const User = require('../../models/User');
 
 // Load Input Validation
 const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
 
 // @route   POST api/users/register
 // @desc    Register user
@@ -60,19 +61,27 @@ router.post('/register', (req, res) => {
 // @desc    Login user
 // @access  Public
 router.post('/login', (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  const { email, password } = req.body;
 
   // Find user by email
   User.findOne({ email }).then(user => {
     if (!user) {
-      return res.status(404).json({ email: 'User not found' });
+      errors.user = 'User not found';
+      return res.status(404).json(errors);
     }
 
     // Check Password
     bcrypt.compare(password, user.password).then(isMatch => {
       if (!isMatch) {
-        return res.status(400).json({ password: 'Password incorrect' });
+        errors.password = 'Password is incorrect';
+        return res.status(400).json(errors);
       }
 
       // Create JWT Payload
