@@ -176,4 +176,28 @@ router.post(
   }
 );
 
+// @route   DELETE api/profile/character/:char_id
+// @desc    Delete character from profile
+// @access  Private
+router.delete(
+  '/character/:char_id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        const removeIndex = profile.characters
+          .map(item => item.id)
+          .indexOf(req.params.char_id);
+
+        // Splice out of array
+        if (removeIndex !== -1) {
+          profile.characters.splice(removeIndex, 1);
+        }
+
+        profile.save().then(profile => res.json(profile));
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
 module.exports = router;
