@@ -147,4 +147,26 @@ router.post(
   }
 );
 
+// @route   POST api/profile/character
+// @desc    Add a character to profile
+// @access  Private
+router.post(
+  '/character',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newChar = {
+        region: req.body.region,
+        realm: req.body.realm,
+        name: req.body.name,
+        main: req.body.main
+      };
+
+      profile.characters.push(newChar);
+
+      profile.save().then(profile => res.json(profile));
+    });
+  }
+);
+
 module.exports = router;
