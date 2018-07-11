@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+
+import Landing from './components/layout/Landing';
+
 import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>GuildLink</h1>
+        <Landing />
       </div>
     );
   }
