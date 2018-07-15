@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import TextFieldGroup from '../common/TextFieldGroup';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { addCharacter } from '../../actions/profileActions';
 
 class AddCharacter extends Component {
   constructor(props) {
@@ -20,6 +21,12 @@ class AddCharacter extends Component {
     this.onCheck = this.onCheck.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
@@ -30,7 +37,7 @@ class AddCharacter extends Component {
       main: this.state.main
     };
 
-    console.log(charData);
+    this.props.addCharacter(charData, this.props.history);
   }
 
   onChange(e) {
@@ -110,6 +117,7 @@ class AddCharacter extends Component {
 }
 
 AddCharacter.propTypes = {
+  addCharacter: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -119,4 +127,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps)(withRouter(AddCharacter));
+export default connect(
+  mapStateToProps,
+  { addCharacter }
+)(withRouter(AddCharacter));
