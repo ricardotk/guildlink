@@ -7,7 +7,7 @@ module.exports = function validateCharacterInput(data) {
   data.region = !isEmpty(data.region) ? data.region : '';
   data.realm = !isEmpty(data.realm) ? data.realm : '';
   data.name = !isEmpty(data.name) ? data.name : '';
-  data.main = !isEmpty(data.main) ? data.main : '';
+  data.main = !isEmpty(data.main) ? data.main : false;
 
   if (Validator.isEmpty(data.region)) {
     errors.region = 'Region field is required';
@@ -23,10 +23,6 @@ module.exports = function validateCharacterInput(data) {
 
   if (Validator.isEmpty(data.name)) {
     errors.name = 'Name field is required';
-  }
-
-  if (Validator.isEmpty(data.main)) {
-    errors.main = 'Main field is required';
   }
 
   return {
