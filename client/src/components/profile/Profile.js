@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Spinner from '../common/Spinner';
 import ProfileHeader from './ProfileHeader';
+import ProfileAbout from './ProfileAbout';
 import { getProfileByHandle } from '../../actions/profileActions';
 
 class Profile extends Component {
@@ -31,6 +32,7 @@ class Profile extends Component {
             <div className="col-md-6" />
           </div>
           <ProfileHeader profile={profile} />
+          <ProfileAbout profile={profile} />
         </div>
       );
     }
