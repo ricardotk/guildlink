@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Spinner from '../common/Spinner';
 import ProfileHeader from './ProfileHeader';
 import ProfileAbout from './ProfileAbout';
+import ProfileCharacters from './ProfileCharacters';
 import { getProfileByHandle } from '../../actions/profileActions';
 
 class Profile extends Component {
@@ -33,6 +34,7 @@ class Profile extends Component {
           </div>
           <ProfileHeader profile={profile} />
           <ProfileAbout profile={profile} />
+          <ProfileCharacters characters={profile.characters} />
         </div>
       );
     }
